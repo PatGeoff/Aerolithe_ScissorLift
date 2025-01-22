@@ -148,5 +148,6 @@ void sendResponse(const char* message) {
   } else {
     Serial.print("UDP -> Error sending packet, result: ");
     Serial.println(result);
+    
   }
 }

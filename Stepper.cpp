@@ -17,11 +17,11 @@
 
 const int stepPin = 12;       // Pin connected to the STEP pin of the stepper driver
 const int dirPin = 13;        // Pin connected to the DIR pin of the stepper driver
-const int farLimitPin = 27;   // Pin for the limit switch when the camera moves away
-const int nearLimitPin = 25;  // Pin for the limit switch when the camera moves closer
+const int farLimitPin = 33;   // Pin for the limit switch when the lift moves up
+const int nearLimitPin = 32;  // Pin for the limit switch when the lift moves down
 
 const int microsteps = 16;  // microsteps à 1/16
-const int acceleration = 10000;
+const int acceleration = 1000;
 
 const long maxPosition = 61200;  // Maximum allowable position
 const int maxSpeed = 6000;       // Maximum speed variable
@@ -39,8 +39,7 @@ volatile bool nearLimitInterruptTriggered = false;
 volatile bool farLimitTriggered = false;
 volatile bool nearLimitTriggered = false;
 
-const int debounceDelay = 50;         // Debounce delay in milliseconds
-const int debounceDelayStuck = 1000;  // Debounce delay in milliseconds
+const int debounceDelay = 200;         // Debounce delay in milliseconds
 unsigned long farLimitLastDebounceTime = 0;
 unsigned long farLimitLastDebounceTimeStuck = 0;
 unsigned long nearLimitLastDebounceTime = 0;
@@ -84,9 +83,6 @@ void initializeLimitSwitches() {
 }
 
 void debounceLimitSwitches() {
-  farLimitTriggered = digitalRead(farLimitPin) == LOW;
-  nearLimitTriggered = digitalRead(nearLimitPin) == LOW;
-
   unsigned long currentMillis = millis();
 
   if (farLimitInterruptTriggered) {
@@ -94,22 +90,21 @@ void debounceLimitSwitches() {
       farLimitTriggered = true;
       farLimitInterruptTriggered = false;
       farLimitLastDebounceTime = currentMillis;
+      Serial.println("Far Limit Triggered");
     }
   } else {
     allowMoveBackward = true;
-
   }
-
 
   if (nearLimitInterruptTriggered) {
     if ((currentMillis - nearLimitLastDebounceTime) > debounceDelay) {
       nearLimitTriggered = true;
       nearLimitInterruptTriggered = false;
       nearLimitLastDebounceTime = currentMillis;
+      Serial.println("Near Limit Triggered");
     }
   } else {
     allowMoveForward = true;
-
   }
 }
 

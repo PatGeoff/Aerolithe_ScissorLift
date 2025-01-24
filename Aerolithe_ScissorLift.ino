@@ -20,16 +20,26 @@ void setup() {
   connectToWiFi(ssid, password, local_IP, gateway, subnet);
   initializeLimitSwitches();
   startAerolitheUDP();
+   // Debug prints to check initial state
+  Serial.println("Initial state of limit switches:");
+  stepperReadSwitches();
 }
 
 void loop() {
   checkAndReconnectWiFi(ssid, password, local_IP, gateway, subnet);
-  debounceLimitSwitches();
+  debounceLimitSwitches();  
   udpGetIncoming();  // Check incomping UDP messages
-  if (!runSpeedBool) {
+  if (!runSpeedBool && !farLimitTriggered && !nearLimitTriggered) {
     stepper.run();  // Allow the stepper motor to run at a fixed speed to a position
-  } else {
+  } else if (!farLimitTriggered && !nearLimitTriggered) {
     stepper.runSpeed();  // Allow the stepper motor to run loose at a defined speed
   }
+  //   // Debug prints to monitor state
+  // Serial.print("Far Limit Triggered: ");
+  // Serial.println(farLimitTriggered);
+  // Serial.print("Near Limit Triggered: ");
+  // Serial.println(nearLimitTriggered);
+
+  // delay(1000);
 
 }

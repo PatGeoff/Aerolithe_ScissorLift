@@ -5,15 +5,14 @@
 
 // External declarations
 extern AccelStepper stepper;
-extern int switchStateFar;
-extern int switchStateClose;
 
-extern volatile bool farLimitTriggered;
-extern volatile bool nearLimitTriggered;
-extern bool iLoop;
-extern bool calibrationDone;
+extern const int topLimitPin;
+extern const int bottomLimitPin;
+
+extern volatile bool lowerLimitInterruptTriggered;
+extern volatile bool upperLimitInterruptTriggered;
+
 extern const int microsteps;
-extern volatile bool stepperMotorEmergencyStop;
 extern bool runSpeedBool;
 extern bool allowMoveForward;
 extern bool allowMoveBackward;
@@ -22,15 +21,5 @@ extern bool allowMoveBackward;
 void initializeLimitSwitches();
 void performStepperMotorMoveTo(int speed, long position);
 void performStepperMotorRunSpeed(int speed);
-void stepperReadSwitches();
-//void stepperRunToPosition();
-// void stepperGoToCloseSwitch();
-// void stepperGoToFarSwitch();
-//void performStepperMotorNearLimitCalibration();
-void performStepperMotorFarLimitCalibration();
-void performStepperMotorFullCalibration();
-void debounceLimitSwitches();
-void stepperReadSwitches();
-void setStepperZeroRef();
 
 #endif  // STEPPER_H

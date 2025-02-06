@@ -9,6 +9,7 @@ void connectToWiFi(const char* ssid, const char* password, IPAddress local_IP, I
     Serial.print("Pas encore cconnecté à Aérolithen\n");
   }
   Serial.print("Maintenant connecté à Aérolithe\n");
+  WiFi.setSleep(false);
 }
 
 bool isWiFiConnected() {

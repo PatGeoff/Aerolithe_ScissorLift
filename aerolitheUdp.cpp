@@ -81,19 +81,19 @@ void stepMotorCommand(const char* packetBuffer) {
   }*/
   if (strcmp(packetBuffer, "stepmotor calibration") == 0) {
     // Call the calibration method
-    performStepperMotorFarLimitCalibration();
+    //performStepperMotorFarLimitCalibration();
     return;
   }
   if (strcmp(packetBuffer, "stepmotor stop") == 0) {
     // Call the stop method
-    stepperMotorEmergencyStop = true;
+    //stepperMotorEmergencyStop = true;
     return;
   }
 
   if (strcmp(packetBuffer, "stepmotor setZero") == 0) {
     String message = "UDP -> stepperCurrentPosition was set to 0";
     Serial.println(message);
-    setStepperZeroRef();
+    //setStepperZeroRef();
     return;
   }
   if (strcmp(packetBuffer, "stepmotor getstepperposition") == 0) {

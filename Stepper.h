@@ -16,6 +16,7 @@ extern const int microsteps;
 extern bool runSpeedBool;
 extern bool allowMoveForward;
 extern bool allowMoveBackward;
+extern int enablePin;
 
 // Function declarations
 void initializeLimitSwitches();

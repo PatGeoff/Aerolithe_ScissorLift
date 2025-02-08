@@ -13,6 +13,7 @@ const int stepPin = 12;       // Pin connected to the STEP pin of the stepper dr
 const int dirPin = 13;        // Pin connected to the DIR pin of the stepper driver
 const int topLimitPin = 27;   // Pin for the limit switch when the lift moves up
 const int bottomLimitPin = 25;  // Pin for the limit switch when the lift moves down
+int enablePin = 27; 
 
 const int microsteps = 16;  // microsteps à 1/16
 const int acceleration = 1000;
@@ -52,11 +53,11 @@ void initializeLimitSwitches() {
   // Set up the pins
   pinMode(topLimitPin, INPUT_PULLUP);
   pinMode(bottomLimitPin, INPUT_PULLUP);
-
+  pinMode(enablePin, OUTPUT);
   // Attach interrupts to the limit switch pins
   //attachInterrupt(digitalPinToInterrupt(topLimitPin), onFarLimit, FALLING);
   //attachInterrupt(digitalPinToInterrupt(bottomLimitPin), onNearLimit, FALLING);
-
+  digitalWrite(enablePin, HIGH);  // Disable the stepper driver after the move  
   Serial.print("Limit switches initiazized");
 
 }
@@ -65,6 +66,7 @@ void initializeLimitSwitches() {
 
 
 void performStepperMotorMoveTo(int speed, long position) {
+  digitalWrite(enablePin, LOW);  // Enable the stepper driver
   runSpeedBool = false;
   if ((position > stepper.currentPosition() && allowMoveForward) || (position < stepper.currentPosition() && allowMoveBackward)) {
     if (position <= maxPosition) {
@@ -90,9 +92,11 @@ void performStepperMotorMoveTo(int speed, long position) {
     stepper.run();
     stepsToRun--;
   }
+  digitalWrite(enablePin, HIGH);  // Disable the stepper driver after the move
 }
 
 void performStepperMotorRunSpeed(int speed) {
+  digitalWrite(enablePin, LOW);  // Enable the stepper driver after the move
   runSpeedBool = true;
   Serial.println("Stepper -> Run Speed Start");
   stepper.setMaxSpeed(maxSpeed);
@@ -100,6 +104,7 @@ void performStepperMotorRunSpeed(int speed) {
   stepper.setSpeed(speed);
   if (speed == 0){
     stepper.stop();
+    digitalWrite(enablePin, HIGH);  // Disable the stepper driver after the move  
   }
 }
 

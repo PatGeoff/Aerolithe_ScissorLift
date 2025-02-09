@@ -19,7 +19,7 @@ const int microsteps = 16;  // microsteps à 1/16
 const int acceleration = 1000;
 
 const long maxPosition = 61200;  // Maximum allowable position
-const int maxSpeed = 20000;       // Maximum speed variable
+const int maxSpeed = 8000;       // Maximum speed variable
 
 bool runSpeedBool = false;
 
@@ -53,7 +53,9 @@ void initializeLimitSwitches() {
   // Set up the pins
   pinMode(topLimitPin, INPUT_PULLUP);
   pinMode(bottomLimitPin, INPUT_PULLUP);
-  pinMode(enablePin, OUTPUT);
+  pinMode(dirPin, OUTPUT);
+  pinMode(stepPin, OUTPUT);
+  pinMode(enablePin, OUTPUT); // Set enablePin as output
   // Attach interrupts to the limit switch pins
   //attachInterrupt(digitalPinToInterrupt(topLimitPin), onFarLimit, FALLING);
   //attachInterrupt(digitalPinToInterrupt(bottomLimitPin), onNearLimit, FALLING);
@@ -98,7 +100,9 @@ void performStepperMotorMoveTo(int speed, long position) {
 void performStepperMotorRunSpeed(int speed) {
   digitalWrite(enablePin, LOW);  // Enable the stepper driver after the move
   runSpeedBool = true;
-  Serial.println("Stepper -> Run Speed Start");
+  Serial.println("Send: Stepper -> Run Speed at " + String(speed));
+  
+
   stepper.setMaxSpeed(maxSpeed);
   stepper.setAcceleration(acceleration);
   stepper.setSpeed(speed);

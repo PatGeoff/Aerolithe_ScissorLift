@@ -23,12 +23,11 @@ const long intervalTest = 1000;
 
 void setup() {
   Serial.begin(115200);
-  pinMode(enablePin, OUTPUT);
   connectToWiFi(ssid, password, local_IP, gateway, subnet);
   initializeLimitSwitches();
   startAerolitheUDP();
   sendResponse("J'ai terminé mon setup!");
-   // Debug prints to check initial state
+  // Debug prints to check initial state
 }
 
 void loop() {
@@ -49,13 +48,14 @@ void loop() {
   // }
 
 
-  //   // Non-blocking print of enablePin state every second
-  // unsigned long currentMillis = millis();
-  // if (currentMillis - previousMillisTest >= intervalTest) {
-  //   previousMillisTest = currentMillis;
-  //   Serial.print("enablePin state: ");
-  //   Serial.println(digitalRead(enablePin));
-  // }
+  // Non-blocking print of enablePin state every second
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillisTest >= intervalTest) {
+    previousMillisTest = currentMillis;
+    // Serial.print("enablePin state: ");
+    // Serial.println(digitalRead(enablePin));
+    // Debugging: Read and print the state of dirPin
+  }
 
   upperLimitInterruptTriggered = lowerLimitInterruptTriggered = false;
 }

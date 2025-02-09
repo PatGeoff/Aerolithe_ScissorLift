@@ -34,10 +34,10 @@ void udpGetIncoming() {
     //senderIP = windows_IP;
     //senderIP = udp.remoteIP();
     //senderPort = udp.remotePort();
-    Serial.print("UDP -> Received UDP packet: ");
-    Serial.print(packetBuffer);
-    String stri = "   --> The senderIP is " + senderIP.toString() + " and the senderPort is " + String(senderPort);
-    Serial.println(stri);
+    Serial.print("Received: UDP -> ");
+    Serial.println(packetBuffer);
+    // String stri = "   --> The senderIP is " + senderIP.toString() + " and the senderPort is " + String(senderPort);
+    // Serial.println(stri);
 
     // Copy the packetBuffer for command parsing
     char commandBuffer[255];
@@ -69,8 +69,8 @@ void udpGetIncoming() {
 void stepMotorCommand(const char* packetBuffer) {
 
   // Debug prints to help diagnose the problem
-  Serial.print("UDP -> Parsing packetBuffer: ");
-  Serial.println(packetBuffer);
+  //Serial.print("Receied: UDP -> Parsing packetBuffer: ");
+  //Serial.println(packetBuffer);
   /*
   // NearCalibration will bring the camera to trigger the nearLimitSwitch and reset the stepper motor's position to zero
   if (strcmp(packetBuffer, "stepmotor nearcalibration") == 0) {
@@ -107,8 +107,8 @@ void stepMotorCommand(const char* packetBuffer) {
   //Serial.print("ICI");
   if (strcmp(packetBuffer, "lift moveto") == 0) {
     int parsed = sscanf(packetBuffer, "lift moveto %d,%i", &speed, &position);
-    Serial.println("UDP -> Message Received:  speed = " + (String)speed + " and position = " + (String)position + " and parsed items = " + (String)parsed + "\n");
-    Serial.println("UDP -> actual position: " + (String)stepper.currentPosition());
+    //Serial.println("UDP -> Message Received:  speed = " + (String)speed + " and position = " + (String)position + " and parsed items = " + (String)parsed + "\n");
+    //Serial.println("UDP -> actual position: " + (String)stepper.currentPosition());
     try {
       //performStepperMotorMoveTo(speed, position / microsteps);
       performStepperMotorMoveTo(speed, position);
@@ -122,11 +122,11 @@ void stepMotorCommand(const char* packetBuffer) {
     int speed;
     int parsed = sscanf(packetBuffer, "lift movespeed %i", &speed);
     if (parsed == 1) {  // Check if parsing was successful
-      Serial.print("UDP -> New Speed = ");
-      Serial.println(speed);
+      //Serial.print("UDP -> New Speed = ");
+      //Serial.println(speed);
       performStepperMotorRunSpeed(speed);
     } else {
-      Serial.println("UDP -> Error: Invalid stepmotor command format.");
+      //Serial.println("UDP -> Error: Invalid stepmotor command format.");
     }
   }
 }
@@ -144,9 +144,9 @@ void sendResponse(const char* message) {
 
   int result = udp.endPacket();
   if (result == 1) {
-    Serial.println("UDP -> Packet sent successfully");
+    //Serial.println("Send UDP -> Packet sent successfully");
   } else {
-    Serial.print("UDP -> Error sending packet, result: ");
+    //Serial.print("UDP -> Error sending packet, result: ");
     Serial.println(result);
     
   }

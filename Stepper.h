@@ -1,3 +1,5 @@
+//Stepper.h
+
 #ifndef STEPPER_H
 #define STEPPER_H
 
@@ -17,6 +19,8 @@ extern bool runSpeedBool;
 extern bool allowMoveForward;
 extern bool allowMoveBackward;
 extern int enablePin;
+extern const int stepPin;       // Pin connected to the STEP pin of the stepper driver
+extern const int dirPin; 
 
 // Function declarations
 void initializeLimitSwitches();
